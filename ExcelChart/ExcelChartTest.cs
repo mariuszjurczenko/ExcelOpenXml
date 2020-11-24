@@ -43,11 +43,19 @@ namespace ExcelChart
                 Chart chart = chartPart.ChartSpace.AppendChild(new Chart());
                 chart.AppendChild(new AutoTitleDeleted() { Val = true }); // We don't want to show the chart title
 
+                // step 5
+                PlotArea plotArea = chart.AppendChild(new PlotArea());
+                Layout layout = plotArea.AppendChild(new Layout());
 
-
+                BarChart barChart = plotArea.AppendChild(new BarChart(
+                        new BarDirection() { Val = new EnumValue<BarDirectionValues>(BarDirectionValues.Column) },
+                        new BarGrouping() { Val = new EnumValue<BarGroupingValues>(BarGroupingValues.Clustered) },
+                        new VaryColors() { Val = false }
+                ));
 
                 // Constructing header
                 Row row = new Row();
+                int rowIndex = 1;
                 // first empty
                 row.AppendChild(ConstructCell(string.Empty, CellValues.String));
                 foreach (var month in Months.Short)
@@ -56,6 +64,8 @@ namespace ExcelChart
                 }
                 // Insert the header row to the Sheet Data
                 sheetData.AppendChild(row);
+                rowIndex++;
+
 
                 // Inserting people
                 foreach (var person in people)

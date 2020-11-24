@@ -52,3 +52,33 @@ https://docs.microsoft.com/en-us/dotnet/api/documentformat.openxml.packaging.dra
 
                 Chart chart = chartPart.ChartSpace.AppendChild(new Chart());
                 chart.AppendChild(new AutoTitleDeleted() { Val = true }); // We don't want to show the chart title
+
+
+
+# Krok - 5
+# Dodajemy PlotArea do wykresu i dołącz Layout oraz BarChart jako jego elementy podrzędne.
+
+		        // step 5
+                PlotArea plotArea = chart.AppendChild(new PlotArea());
+                Layout layout = plotArea.AppendChild(new Layout());
+
+                BarChart barChart = plotArea.AppendChild(new BarChart(
+                        new BarDirection() { Val = new EnumValue<BarDirectionValues>(BarDirectionValues.Column) },
+                        new BarGrouping() { Val = new EnumValue<BarGroupingValues>(BarGroupingValues.Clustered) },
+                        new VaryColors() { Val = false }
+                ));
+
+
+
+                // Constructing header
+                Row row = new Row();
+                int rowIndex = 1;
+                // first empty
+                row.AppendChild(ConstructCell(string.Empty, CellValues.String));
+                foreach (var month in Months.Short)
+                {
+                    row.AppendChild(ConstructCell(month, CellValues.String));
+                }
+                // Insert the header row to the Sheet Data
+                sheetData.AppendChild(row);
+        -->     rowIndex++;
