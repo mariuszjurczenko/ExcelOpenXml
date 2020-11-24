@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelCreate", "ExcelCreate\ExcelCreate.csproj", "{BBF2C74F-0164-4046-8F71-75FEC40AC8AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelCreate", "ExcelCreate\ExcelCreate.csproj", "{BBF2C74F-0164-4046-8F71-75FEC40AC8AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelChart", "ExcelChart\ExcelChart.csproj", "{C867830F-078E-4459-94E5-98F15EC06921}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BBF2C74F-0164-4046-8F71-75FEC40AC8AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBF2C74F-0164-4046-8F71-75FEC40AC8AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBF2C74F-0164-4046-8F71-75FEC40AC8AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C867830F-078E-4459-94E5-98F15EC06921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C867830F-078E-4459-94E5-98F15EC06921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C867830F-078E-4459-94E5-98F15EC06921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C867830F-078E-4459-94E5-98F15EC06921}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
