@@ -1,2 +1,2 @@
 language: csharp
-solution: pdf.sln
+solution: ExcelOpenXml.sln
