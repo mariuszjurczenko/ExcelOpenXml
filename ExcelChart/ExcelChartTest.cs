@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -31,13 +32,20 @@ namespace ExcelChart
                 worksheetPart.Worksheet.Save();
                 drawingsPart.WorksheetDrawing = new WorksheetDrawing();
 
-
-
-
                 sheets.Append(sheet);
                 workbookPart.Workbook.Save();
 
-              
+                // step 4
+                ChartPart chartPart = drawingsPart.AddNewPart<ChartPart>();
+                chartPart.ChartSpace = new ChartSpace();
+                chartPart.ChartSpace.AppendChild(new EditingLanguage() { Val = "en-US" });
+
+                Chart chart = chartPart.ChartSpace.AppendChild(new Chart());
+                chart.AppendChild(new AutoTitleDeleted() { Val = true }); // We don't want to show the chart title
+
+
+
+
                 // Constructing header
                 Row row = new Row();
                 // first empty

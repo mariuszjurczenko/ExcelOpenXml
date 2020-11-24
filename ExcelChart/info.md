@@ -21,3 +21,34 @@
 ##################################################################################################################################
 
 
+# Krok - 3
+# Narysujemy wykres w arkuszu kalkulacyjnym
+# Po utworzeniu arkusza dodajmy DrawingsPart do arkusza i inicjujemy rysunek w arkuszu.
+
+https://docs.microsoft.com/en-us/dotnet/api/documentformat.openxml.packaging.drawingspart?redirectedfrom=MSDN&view=openxml-2.8.1
+
+		        Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
+                Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "People" };
+                SheetData sheetData = worksheetPart.Worksheet.AppendChild(new SheetData());
+
+                // step 3
+                DrawingsPart drawingsPart = worksheetPart.AddNewPart<DrawingsPart>();
+                worksheetPart.Worksheet.Append(new Drawing() { Id = worksheetPart.GetIdOfPart(drawingsPart) });
+                worksheetPart.Worksheet.Save();
+                drawingsPart.WorksheetDrawing = new WorksheetDrawing();
+
+
+                sheets.Append(sheet);
+                workbookPart.Workbook.Save();
+
+
+# Krok - 4
+# Dodajemy wykres do DrawingPart.
+
+		        // step 4
+                ChartPart chartPart = drawingsPart.AddNewPart<ChartPart>();
+                chartPart.ChartSpace = new ChartSpace();
+                chartPart.ChartSpace.AppendChild(new EditingLanguage() { Val = "en-US" });
+
+                Chart chart = chartPart.ChartSpace.AppendChild(new Chart());
+                chart.AppendChild(new AutoTitleDeleted() { Val = true }); // We don't want to show the chart title
