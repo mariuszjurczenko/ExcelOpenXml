@@ -66,6 +66,38 @@ namespace ExcelChart
                 sheetData.AppendChild(row);
                 rowIndex++;
 
+                // step 6 
+                for (int i = 0; i < people.Count; i++)
+                {
+                    BarChartSeries barChartSeries = barChart.AppendChild(new BarChartSeries(
+                        new Index() { Val = (uint)i },
+                        new Order() { Val = (uint)i },
+                        new SeriesText(new NumericValue() { Text = people[i].Name })
+                    ));
+
+                    // Adding category axis to the chart
+                    CategoryAxisData categoryAxisData = barChartSeries.AppendChild(new CategoryAxisData());
+
+                    // Category
+                    // Constructing the chart category
+                    string formulaCat = "People!$B$1:$M$1";
+
+                    StringReference stringReference = categoryAxisData.AppendChild(new StringReference()
+                    {
+                        Formula = new DocumentFormat.OpenXml.Drawing.Charts.Formula() { Text = formulaCat }
+                    });
+
+                    StringCache stringCache = stringReference.AppendChild(new StringCache());
+                    stringCache.Append(new PointCount() { Val = (uint)Months.Short.Length });
+
+                    for (int j = 0; j < Months.Short.Length; j++)
+                    {
+                        stringCache.AppendChild(new NumericPoint() { Index = (uint)j }).Append(new NumericValue(Months.Short[j]));
+                    }
+                }
+
+                var chartSeries = barChart.Elements<BarChartSeries>().GetEnumerator();
+
 
                 // Inserting people
                 foreach (var person in people)
