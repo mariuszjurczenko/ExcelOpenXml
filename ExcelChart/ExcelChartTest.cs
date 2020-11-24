@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Drawing.Spreadsheet;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Collections.Generic;
@@ -23,6 +24,16 @@ namespace ExcelChart
                 Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
                 Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "People" };
                 SheetData sheetData = worksheetPart.Worksheet.AppendChild(new SheetData());
+
+                // step 3
+                DrawingsPart drawingsPart = worksheetPart.AddNewPart<DrawingsPart>();
+                worksheetPart.Worksheet.Append(new Drawing() { Id = worksheetPart.GetIdOfPart(drawingsPart) });
+                worksheetPart.Worksheet.Save();
+                drawingsPart.WorksheetDrawing = new WorksheetDrawing();
+
+
+
+
                 sheets.Append(sheet);
                 workbookPart.Workbook.Save();
 
