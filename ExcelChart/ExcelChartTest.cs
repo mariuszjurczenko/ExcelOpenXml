@@ -144,18 +144,50 @@ namespace ExcelChart
                 barChart.Append(new AxisId() { Val = 48672768u });
 
 
-                // Inserting people
-                foreach (var person in people)
-                {
-                    row = new Row();
-                    row.AppendChild(ConstructCell(person.Name, CellValues.String));
+                // step 8
+                // Adding Category Axis
+                plotArea.AppendChild(
+                    new CategoryAxis(
+                        new AxisId() { Val = 48650112u },
+                        new Scaling(new Orientation() { Val = new EnumValue<DocumentFormat.OpenXml.Drawing.Charts.OrientationValues>(DocumentFormat.OpenXml.Drawing.Charts.OrientationValues.MinMax) }),
+                        new Delete() { Val = false },
+                        new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
+                        new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                        new CrossingAxis() { Val = 48672768u },
+                        new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
+                        new AutoLabeled() { Val = true },
+                        new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) }
+                    )
+                );
 
-                    foreach (var value in person.Values)
-                    {
-                        row.AppendChild(ConstructCell(value.ToString(), CellValues.Number));
-                    }
-                    sheetData.AppendChild(row);
-                }
+                // Adding Value Axis
+                plotArea.AppendChild(
+                    new ValueAxis(
+                        new AxisId() { Val = 48672768u },
+                        new Scaling(new Orientation() { Val = new EnumValue<DocumentFormat.OpenXml.Drawing.Charts.OrientationValues>(DocumentFormat.OpenXml.Drawing.Charts.OrientationValues.MinMax) }),
+                        new Delete() { Val = false },
+                        new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
+                        new MajorGridlines(),
+                        new DocumentFormat.OpenXml.Drawing.Charts.NumberingFormat()
+                        {
+                            FormatCode = "General",
+                            SourceLinked = true
+                        },
+                        new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                        new CrossingAxis() { Val = 48650112u },
+                        new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
+                        new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) }
+                    )
+                );
+
+                chart.Append(
+                    new PlotVisibleOnly() { Val = true },
+                    new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
+                    new ShowDataLabelsOverMaximum() { Val = false }
+                );
+
+                chartPart.ChartSpace.Save();
+
                 worksheetPart.Worksheet.Save();
             }
         }

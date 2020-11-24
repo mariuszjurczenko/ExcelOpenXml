@@ -177,3 +177,55 @@ https://docs.microsoft.com/en-us/dotnet/api/documentformat.openxml.packaging.dra
 
                 barChart.Append(new AxisId() { Val = 48650112u });
                 barChart.Append(new AxisId() { Val = 48672768u });
+
+
+
+# Krok - 8
+# Konfigurowanie CategoyAxis i ValueAxis
+# Do tej pory dodaliśmy rysunek do arkusza i dołączaliśmy do niego wykres. 
+# Następnie dodaliśmy ChartSeries do Chart. Rzeczywista kategoria i wartości zostały dodane do każdej ChartSeries. 
+# Teraz musimy ustawić osie kategorii i wartości!!!
+
+                // step 8
+                // Adding Category Axis
+                plotArea.AppendChild(
+                    new CategoryAxis(
+                        new AxisId() { Val = 48650112u },
+                        new Scaling(new Orientation() { Val = new EnumValue<DocumentFormat.OpenXml.Drawing.Charts.OrientationValues>(DocumentFormat.OpenXml.Drawing.Charts.OrientationValues.MinMax) }),
+                        new Delete() { Val = false },
+                        new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Bottom) },
+                        new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                        new CrossingAxis() { Val = 48672768u },
+                        new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
+                        new AutoLabeled() { Val = true },
+                        new LabelAlignment() { Val = new EnumValue<LabelAlignmentValues>(LabelAlignmentValues.Center) }
+                    )
+                );
+
+                // Adding Value Axis
+                plotArea.AppendChild(
+                    new ValueAxis(
+                        new AxisId() { Val = 48672768u },
+                        new Scaling(new Orientation() { Val = new EnumValue<DocumentFormat.OpenXml.Drawing.Charts.OrientationValues>(DocumentFormat.OpenXml.Drawing.Charts.OrientationValues.MinMax) }),
+                        new Delete() { Val = false },
+                        new AxisPosition() { Val = new EnumValue<AxisPositionValues>(AxisPositionValues.Left) },
+                        new MajorGridlines(),
+                        new DocumentFormat.OpenXml.Drawing.Charts.NumberingFormat()
+                        {
+                            FormatCode = "General",
+                            SourceLinked = true
+                        },
+                        new TickLabelPosition() { Val = new EnumValue<TickLabelPositionValues>(TickLabelPositionValues.NextTo) },
+                        new CrossingAxis() { Val = 48650112u },
+                        new Crosses() { Val = new EnumValue<CrossesValues>(CrossesValues.AutoZero) },
+                        new CrossBetween() { Val = new EnumValue<CrossBetweenValues>(CrossBetweenValues.Between) }
+                    )
+                );
+
+                chart.Append(
+                    new PlotVisibleOnly() { Val = true },
+                    new DisplayBlanksAs() { Val = new EnumValue<DisplayBlanksAsValues>(DisplayBlanksAsValues.Gap) },
+                    new ShowDataLabelsOverMaximum() { Val = false }
+                );
+
+                chartPart.ChartSpace.Save();  
