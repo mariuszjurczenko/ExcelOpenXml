@@ -123,3 +123,57 @@ https://docs.microsoft.com/en-us/dotnet/api/documentformat.openxml.packaging.dra
                 }
 
                 var chartSeries = barChart.Elements<BarChartSeries>().GetEnumerator();
+
+
+
+# Krok - 7
+# Dodajemy wartości dla wykresu
+# Dla każdej osoby dodajemy rzeczywiste wartości do każdej serii. 
+# Zwróć uwagę, że tak samo jak w przypadku kategorii dodajemy odniesienie do danych w arkuszu kalkulacyjnym za pomocą formuły, 
+# a także dodajemy rzeczywiste dane do pamięci podręcznej.          
+# !!!!  usuwamy // Inserting people
+
+                // step 7
+                for (int i = 0; i < people.Count; i++)
+                {
+                    row = new Row();
+
+                    row.AppendChild(ConstructCell(people[i].Name, CellValues.String));
+
+                    chartSeries.MoveNext();
+
+                    string formulaVal = string.Format("People!$B${0}:$M${0}", rowIndex);
+                    DocumentFormat.OpenXml.Drawing.Charts.Values values = chartSeries.Current.AppendChild(new DocumentFormat.OpenXml.Drawing.Charts.Values());
+
+                    NumberReference numberReference = values.AppendChild(new NumberReference()
+                    {
+                        Formula = new DocumentFormat.OpenXml.Drawing.Charts.Formula() { Text = formulaVal }
+                    });
+
+                    NumberingCache numberingCache = numberReference.AppendChild(new NumberingCache());
+                    numberingCache.Append(new PointCount() { Val = (uint)Months.Short.Length });
+
+                    for (uint j = 0; j < people[i].Values.Length; j++)
+                    {
+                        var value = people[i].Values[j];
+
+                        row.AppendChild(ConstructCell(value.ToString(), CellValues.Number));
+
+                        numberingCache.AppendChild(new NumericPoint() { Index = j }).Append(new NumericValue(value.ToString()));
+                    }
+
+                    sheetData.AppendChild(row);
+                    rowIndex++;
+                }
+
+                barChart.AppendChild(new DataLabels(
+                                    new ShowLegendKey() { Val = false },
+                                    new ShowValue() { Val = false },
+                                    new ShowCategoryName() { Val = false },
+                                    new ShowSeriesName() { Val = false },
+                                    new ShowPercent() { Val = false },
+                                    new ShowBubbleSize() { Val = false }
+                                ));
+
+                barChart.Append(new AxisId() { Val = 48650112u });
+                barChart.Append(new AxisId() { Val = 48672768u });
