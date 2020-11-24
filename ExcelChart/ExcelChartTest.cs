@@ -188,6 +188,53 @@ namespace ExcelChart
 
                 chartPart.ChartSpace.Save();
 
+                // step 9
+                // Positioning the chart on the spreadsheet
+                TwoCellAnchor twoCellAnchor = drawingsPart.WorksheetDrawing.AppendChild(new TwoCellAnchor());
+
+                twoCellAnchor.Append(new DocumentFormat.OpenXml.Drawing.Spreadsheet.FromMarker(
+                        new ColumnId("0"),
+                        new ColumnOffset("0"),
+                        new RowId((rowIndex + 2).ToString()),
+                        new RowOffset("0")
+                ));
+
+                twoCellAnchor.Append(new DocumentFormat.OpenXml.Drawing.Spreadsheet.ToMarker(
+                        new ColumnId("8"),
+                        new ColumnOffset("0"),
+                        new RowId((rowIndex + 12).ToString()),
+                        new RowOffset("0")
+                ));
+
+                // Append GraphicFrame to TwoCellAnchor
+                GraphicFrame graphicFrame = twoCellAnchor.AppendChild(new GraphicFrame());
+                graphicFrame.Macro = string.Empty;
+
+                graphicFrame.Append(new NonVisualGraphicFrameProperties(
+                        new NonVisualDrawingProperties()
+                        {
+                            Id = 2u,
+                            Name = "Sample Chart"
+                        },
+                        new NonVisualGraphicFrameDrawingProperties()
+                ));
+
+                graphicFrame.Append(new Transform(
+                    new DocumentFormat.OpenXml.Drawing.Offset() { X = 0L, Y = 0L },
+                    new DocumentFormat.OpenXml.Drawing.Extents() { Cx = 0L, Cy = 0L }
+                ));
+
+                graphicFrame.Append(new DocumentFormat.OpenXml.Drawing.Graphic(
+                        new DocumentFormat.OpenXml.Drawing.GraphicData(
+                                new ChartReference() { Id = drawingsPart.GetIdOfPart(chartPart) }
+                            )
+                        { Uri = "http://schemas.openxmlformats.org/drawingml/2006/chart" }
+                 ));
+
+                twoCellAnchor.Append(new ClientData());
+
+                drawingsPart.WorksheetDrawing.Save();
+
                 worksheetPart.Worksheet.Save();
             }
         }
